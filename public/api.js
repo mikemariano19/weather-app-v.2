@@ -1,7 +1,6 @@
 let city = document.getElementById('city')
 let locations = document.getElementById('location');
 let dateAndTime = document.getElementById('date');
-let time = document.getElementById('time');
 let temp = document.getElementById('temperature');
 let feelsLike = document.getElementById('feels-like');
 let weatherDesc = document.getElementById('weather-description');
@@ -12,11 +11,14 @@ let wind = document.getElementById('wind');
 let country = document.getElementById('country');
 let btn = document.getElementById('btn');
 
+city.addEventListener('keydown', function(event){
+    if(event.key === 'Enter')
+    show();
+})
 
 
 
-
-btn.addEventListener('click', function (){
+ function show(){
     fetch('https://api.openweathermap.org/data/2.5/weather?q='+city.value+'&appid=dc0b2d1eb4fa8ffcf52f194470748c73')
     .then(response => response.json())
     .then(data => {
@@ -37,7 +39,6 @@ btn.addEventListener('click', function (){
         var date = d.getDate();
         var month = months[d.getMonth()];   
         var year = d.getFullYear();
-        var x = document.getElementById("time");
         dateAndTime.innerHTML = month + " " + date + ", " + year +"<br>"+ day + " "  + " " + hr + ":" + min + ampm;
 
         let temperatureData = Math.abs(data['main']['temp']-273.15).toPrecision(3)+'°';
@@ -60,23 +61,9 @@ btn.addEventListener('click', function (){
         country.innerHTML = countryData;
         pressure.innerHTML = pressureData;
 
-        console.log(data)
+        city.value = '';
+        // console.log(data)
     })
     .catch(err => alert('Invalid City!'))
-})
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-console.log('fsdafdsf')
