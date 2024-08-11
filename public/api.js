@@ -11,10 +11,11 @@ let wind = document.getElementById('wind');
 let country = document.getElementById('country');
 let btn = document.getElementById('btn');
 
-city.addEventListener('keydown', function(event){
-    if(event.key === 'Enter')
-    show();
-})
+// city.addEventListener('keydown', function(event){
+//     if(event.key === 'Enter')
+//     show();
+//     window.refresh();
+// })
 
 
 
@@ -62,7 +63,24 @@ city.addEventListener('keydown', function(event){
         pressure.innerHTML = pressureData;
 
         city.value = '';
-        // console.log(data)
+        console.log(data)
+
+         // Set a condition for the background image
+         let condition = data.weather[0].main;
+         let backgroundImage = '';
+         // Select images based on condition
+         switch(condition.toLowerCase()) {
+           case 'clouds': backgroundImage = '/images/cloudy.jpg'; break;
+           case 'rain': backgroundImage = '/images/rainy.jpg'; break;
+           case 'snow': backgroundImage = '/images/snowy.jpg'; break;
+           case 'clear': backgroundImage = '/images/sunny.jpg'; break;
+           default: backgroundImage = '/images/default.jpg';
+         }
+   
+         // Create a style element and set the selected image as the background
+         let styleNode = document.createElement("style");
+         document.head.appendChild(styleNode);
+         styleNode.innerHTML = `html body { background-image: url('${backgroundImage}'); }`;
     })
     .catch(err => alert('Invalid City!'))
 }
