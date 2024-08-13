@@ -51,6 +51,8 @@ let btn = document.getElementById('btn');
         let countryData = 'Country:' + ' ' + data['sys']['country'];
         let pressureData = 'Pressure:' + ' ' + data['main']['pressure'];
         let iconCode = data['weather']['0']['icon'];
+        let weatherCondition = data['weather']['0']['main'];
+
 
         icon.innerHTML = ` <img src="https://openweathermap.org/img/wn/${iconCode}@2x.png" alt="" id="">`;
         temp.innerHTML = temperatureData.toUpperCase();
@@ -62,26 +64,57 @@ let btn = document.getElementById('btn');
         country.innerHTML = countryData;
         pressure.innerHTML = pressureData;
 
+        changeBackground(weatherCondition.toLowerCase())
+
         city.value = '';
         console.log(data)
 
-         // Set a condition for the background image
-         let condition = data.weather[0].main;
-         let backgroundImage = '';
-         // Select images based on condition
-         switch(condition.toLowerCase()) {
-           case 'clouds': backgroundImage = '/images/cloudy.jpg'; break;
-           case 'rain': backgroundImage = '/images/rainy.jpg'; break;
-           case 'snow': backgroundImage = '/images/snowy.jpg'; break;
-           case 'clear': backgroundImage = '/images/sunny.jpg'; break;
-           default: backgroundImage = '/images/default.jpg';
-         }
+        //  // Set a condition for the background image
+        //  let condition = data.weather[0].main;
+        //  let backgroundImage = '';
+        //  // Select images based on condition
+        //  switch(condition.toLowerCase()) {
+        //    case 'clouds': backgroundImage = '/images/cloudy.jpg'; break;
+        //    case 'rain': backgroundImage = '/images/rainy.jpg'; break;
+        //    case 'snow': backgroundImage = '/images/snowy.jpg'; break;
+        //    case 'clear': backgroundImage = '/images/sunny.jpg'; break;
+        //    default: backgroundImage = '/images/default.jpg';
+        //  }
    
-         // Create a style element and set the selected image as the background
-         let styleNode = document.createElement("style");
-         document.head.appendChild(styleNode);
-         styleNode.innerHTML = `html body { background-image: url('${backgroundImage}'); }`;
+        //  // Create a style element and set the selected image as the background
+        //  let styleNode = document.createElement("style");
+        //  document.head.appendChild(styleNode);
+        //  styleNode.innerHTML = `html body { background-image: url('${backgroundImage}'); }`;
+
+        
     })
     .catch(err => alert('Invalid City!'))
+}
+
+function changeBackground(weatherCondition) {
+    let backgroundImage;
+
+    switch (weatherCondition) {
+        case 'clear':
+            backgroundImage = 'url(/public/backgroundImages/clear_sky.jpg)';
+            break;
+        case 'clouds':
+            backgroundImage = 'url(/public/backgroundImages/cloudy.jpg)';
+            break;
+        case 'rain':
+            backgroundImage = 'url(/backgroundImages/raining.mov)';
+            break;
+        case 'snow':
+            backgroundImage = 'url(/backgroundImages/snow.jpg)';
+            break;
+        case 'thunderstorm':
+            backgroundImage = 'url(/backgroundImages/thunderstorm.jpg)';
+            break;
+        default:
+            backgroundImage = 'url(/public/backgroundImages/yelpcamp.png)'; // Fallback image
+            break;
+    }
+
+    document.body.style.backgroundImage = backgroundImage;
 }
 

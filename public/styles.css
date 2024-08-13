@@ -687,6 +687,12 @@ video {
   --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
 }
 
+.body {
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease-in-out;
+}
+
 .focus-within\:text-gray-600:focus-within{
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
@@ -705,4 +711,3 @@ video {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
