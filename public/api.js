@@ -91,7 +91,7 @@ let btn = document.getElementById('btn');
     .catch(err => alert('Invalid City!'))
 }
 
-function changeBackground(weatherCondition) {
+const changeBackground = (weatherCondition) => {
     let backgroundImage;
 
     switch (weatherCondition) {
@@ -102,13 +102,13 @@ function changeBackground(weatherCondition) {
             backgroundImage = 'url(/public/backgroundImages/cloudy.jpg)';
             break;
         case 'rain':
-            backgroundImage = 'url(/backgroundImages/raining.mov)';
+            backgroundImage = 'url(/public/backgroundImages/raining.jpg)';
             break;
         case 'snow':
-            backgroundImage = 'url(/backgroundImages/snow.jpg)';
+            backgroundImage = 'url(/public/backgroundImages/snow.jpg)';
             break;
         case 'thunderstorm':
-            backgroundImage = 'url(/backgroundImages/thunderstorm.jpg)';
+            backgroundImage = 'url(/public/backgroundImages/thunderstorm.jpg)';
             break;
         default:
             backgroundImage = 'url(/public/backgroundImages/yelpcamp.png)'; // Fallback image
