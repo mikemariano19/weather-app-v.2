@@ -1,18 +1,28 @@
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
+window.onload = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
 }
 
 function success(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    if (position && position.coords) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
-    // Set latitude and longitude in the hidden input fields
-    document.getElementById('latitude').value = latitude;
-    document.getElementById('longitude').value = longitude;
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        
+        // Set latitude and longitude in the hidden input fields
+        document.getElementById('latitude').value = latitude;
+        document.getElementById('longitude').value = longitude;
+    } else {
+        console.error('Position object or coords not available');
+    }
 }
 
-function error() {
+function error(error) {
     console.log("Unable to retrieve location.");
+    console.warn(`ERROR(${error.code}): ${error.message}`);
+    alert(`${error.message}`)
 }
 
 // Handle form submission
