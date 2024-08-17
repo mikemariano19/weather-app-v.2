@@ -65,31 +65,19 @@ let btn = document.getElementById('btn');
         pressure.innerHTML = pressureData;
 
         changeBackground(weatherCondition.toLowerCase())
+        document.getElementById('weather-result').style.display = 'block';
 
         city.value = '';
         console.log(data)
-
-        //  // Set a condition for the background image
-        //  let condition = data.weather[0].main;
-        //  let backgroundImage = '';
-        //  // Select images based on condition
-        //  switch(condition.toLowerCase()) {
-        //    case 'clouds': backgroundImage = '/images/cloudy.jpg'; break;
-        //    case 'rain': backgroundImage = '/images/rainy.jpg'; break;
-        //    case 'snow': backgroundImage = '/images/snowy.jpg'; break;
-        //    case 'clear': backgroundImage = '/images/sunny.jpg'; break;
-        //    default: backgroundImage = '/images/default.jpg';
-        //  }
-   
-        //  // Create a style element and set the selected image as the background
-        //  let styleNode = document.createElement("style");
-        //  document.head.appendChild(styleNode);
-        //  styleNode.innerHTML = `html body { background-image: url('${backgroundImage}'); }`;
-
-        
     })
-    .catch(err => alert('Invalid City!'))
+    .catch(err =>  {
+        document.body.style.backgroundImage = 'url(/public/backgroundImages/errorBG.jpg)';
+        // Hide the result section on error
+        document.getElementById('weather-result').style.display = 'none';
+    })
 }
+
+
 
 const changeBackground = (weatherCondition) => {
     let backgroundImage;
@@ -111,7 +99,7 @@ const changeBackground = (weatherCondition) => {
             backgroundImage = 'url(/public/backgroundImages/thunderstorm.jpg)';
             break;
         default:
-            backgroundImage = 'url(/public/backgroundImages/yelpcamp.png)'; // Fallback image
+            backgroundImage = 'url(/public/backgroundImages/abstract-sky-cloud.jpg)'; // Fallback image
             break;
     }
 
