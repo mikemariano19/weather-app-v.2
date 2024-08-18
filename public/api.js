@@ -3,7 +3,7 @@ let locations = document.getElementById('location');
 let dateAndTime = document.getElementById('date');
 let temp = document.getElementById('temperature');
 let feelsLike = document.getElementById('feels-like');
-let weatherDesc = document.getElementById('weather-description');
+let weatherDescription = document.getElementById('weather-description');
 let icon = document.getElementById('icon');
 let humidity = document.getElementById('humidity');
 let pressure = document.getElementById('pressure');
@@ -11,72 +11,83 @@ let wind = document.getElementById('wind');
 let country = document.getElementById('country');
 let btn = document.getElementById('btn');
 
-// city.addEventListener('keydown', function(event){
-//     if(event.key === 'Enter')
-//     show();
-//     window.refresh();
-// })
 
+const show = () => {
+    const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=dc0b2d1eb4fa8ffcf52f194470748c73`;
+    
+    fetch(weatherApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const date = new Date();
+            const formattedDate = formatDateTime(date);
+            
+            dateAndTime.innerHTML = formattedDate;
 
+            const temperatureData = `${convertToCelsius(data.main.temp)}°`;
+            const feelsData = `Feels like ${convertToCelsius(data.main.feels_like)}°`;
+            const weatherDescriptionData = data.weather[0].description.toUpperCase();
+            const locationData = data.name.toUpperCase();
+            const humidityData = `Humidity: ${data.main.humidity}%`;
+            const windData = `Wind: ${data.wind.speed} m/s`;
+            const countryData = `Country: ${data.sys.country}`;
+            const pressureData = `Pressure: ${data.main.pressure} hPa`;
+            const iconCode = data.weather[0].icon;
+            const weatherCondition = data.weather[0].main.toLowerCase();
 
- function show(){
-    fetch('https://api.openweathermap.org/data/2.5/weather?q='+city.value+'&appid=dc0b2d1eb4fa8ffcf52f194470748c73')
-    .then(response => response.json())
-    .then(data => {
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "December"];
-        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var d = new Date();
-        var day = days[d.getDay()];
-        var hr = d.getHours();
-        var min = d.getMinutes();
-        if (min < 10) {
-            min = "0" + min;
-        }
-        var ampm = "am";
-        if( hr > 12 ) {
-            hr -= 12;
-            ampm = "pm";
-        }
-        var date = d.getDate();
-        var month = months[d.getMonth()];   
-        var year = d.getFullYear();
-        dateAndTime.innerHTML = month + " " + date + ", " + year +"<br>"+ day + " "  + " " + hr + ":" + min + ampm;
+            setWeatherIcon(iconCode);
+            displayWeatherData({ 
+                temperatureData, feelsData, weatherDescriptionData, 
+                locationData, humidityData, windData, 
+                countryData, pressureData 
+            });
 
-        let temperatureData = Math.abs(data['main']['temp']-273.15).toPrecision(3)+'°';
-        let feelsData = 'Feels like' + ' ' + Math.abs(data['main']['feels_like']-273.15).toPrecision(3)+'°';
-        let weatherDescData = data['weather']['0']['description'];
-        let locationData = data['name'];
-        let humidityData = 'Humidity:' + ' ' + data['main']['humidity'];
-        let windData = 'Wind:' + ' ' + data['wind']['speed'];
-        let countryData = 'Country:' + ' ' + data['sys']['country'];
-        let pressureData = 'Pressure:' + ' ' + data['main']['pressure'];
-        let iconCode = data['weather']['0']['icon'];
-        let weatherCondition = data['weather']['0']['main'];
+            changeBackground(weatherCondition);
+            document.getElementById('weather-result').style.display = 'block';
+            city.value = ''; // Clear the input field after success
+        })
+        .catch(handleError);
+};
 
+const formatDateTime = (date) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    
+    let day = days[date.getDay()];
+    let hr = date.getHours();
+    let min = date.getMinutes();
+    let ampm = hr >= 12 ? "pm" : "am";
+    
+    hr = hr % 12 || 12; // Convert to 12-hour format
+    min = min < 10 ? `0${min}` : min;
 
-        icon.innerHTML = ` <img src="https://openweathermap.org/img/wn/${iconCode}@2x.png" alt="" id="">`;
-        temp.innerHTML = temperatureData.toUpperCase();
-        feelsLike.innerHTML = feelsData;
-        weatherDesc.innerHTML = weatherDescData.toUpperCase();
-        locations.innerHTML = locationData.toUpperCase();
-        humidity.innerHTML = humidityData;
-        wind.innerHTML = windData;
-        country.innerHTML = countryData;
-        pressure.innerHTML = pressureData;
+    let formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}<br>${day} ${hr}:${min}${ampm}`;
+    
+    return formattedDate;
+};
 
-        changeBackground(weatherCondition.toLowerCase())
-        document.getElementById('weather-result').style.display = 'block';
+const convertToCelsius = (temp) => {
+    return (temp - 273.15).toPrecision(3);
+};
 
-        city.value = '';
-        console.log(data)
-    })
-    .catch(err =>  {
-        document.body.style.backgroundImage = 'url(/public/backgroundImages/errorBG.jpg)';
-        // Hide the result section on error
-        document.getElementById('weather-result').style.display = 'none';
-    })
-}
+const setWeatherIcon = (iconCode) => {
+    icon.innerHTML = `<img src="https://openweathermap.org/img/wn/${iconCode}@2x.png" alt="Weather icon">`;
+};
 
+const displayWeatherData = ({ temperatureData, feelsData, weatherDescriptionData, locationData, humidityData, windData, countryData, pressureData }) => {
+    temp.innerHTML = temperatureData;
+    feelsLike.innerHTML = feelsData;
+    weatherDescription.innerHTML = weatherDescriptionData;
+    locations.innerHTML = locationData;
+    humidity.innerHTML = humidityData;
+    wind.innerHTML = windData;
+    country.innerHTML = countryData;
+    pressure.innerHTML = pressureData;
+};
+
+const handleError = (err) => {
+    document.body.style.backgroundImage = 'url(/public/backgroundImages/errorBG.jpg)';
+    document.getElementById('weather-result').style.display = 'none';
+};
 
 
 const changeBackground = (weatherCondition) => {
