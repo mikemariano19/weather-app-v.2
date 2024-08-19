@@ -1,38 +1,33 @@
-window.onload = () => {
+let formSubmitted = false;
+
+// Automatically fetch user's geolocation on page load
+window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
-    }
-}
-
-function success(position) {
-    if (position && position.coords) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        
-        // Set latitude and longitude in the hidden input fields
-        document.getElementById('latitude').value = latitude;
-        document.getElementById('longitude').value = longitude;
     } else {
-        console.error('Position object or coords not available');
+        console.log("Geolocation is not supported by this browser.");
+    }
+};
+
+// Success callback: Sets latitude and longitude, then auto-submits the form
+function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // Set the latitude and longitude values in the hidden input fields
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
+
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+     // Check if form is already submitted
+     if (!formSubmitted) {
+        formSubmitted = true;  // Mark as submitted to prevent future submissions
+        document.getElementById('locationForm').submit();  // Submit the form
     }
 }
 
-function error(error) {
-    console.log("Unable to retrieve location.");
-    console.warn(`ERROR(${error.code}): ${error.message}`);
-    alert(`${error.message}`)
-}
-
-// Handle form submission
-function submitForm(event) {
-    event.preventDefault(); // Prevent form from submitting immediately
-    
-    const city = document.getElementById('city').value;
-    const latitude = document.getElementById('latitude').value;
-    const longitude = document.getElementById('longitude').value;
-
-    // Perform your form submission logic here, e.g., send the data to a server
-    console.log(`City: ${city}, Latitude: ${latitude}, Longitude: ${longitude}`);
+// Error callback: Handle errors if geolocation fails
+function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
 }

@@ -40,7 +40,7 @@ const show = () => {
                 locationData, humidityData, windData, 
                 countryData, pressureData 
             });
-
+            console.log(data)
             changeBackground(weatherCondition);
             document.getElementById('weather-result').style.display = 'block';
             city.value = ''; // Clear the input field after success
@@ -110,7 +110,7 @@ const changeBackground = (weatherCondition) => {
             backgroundImage = 'url(/public/backgroundImages/thunderstorm.jpg)';
             break;
         default:
-            backgroundImage = 'url(/public/backgroundImages/abstract-sky-cloud.jpg)'; // Fallback image
+            backgroundImage = 'url(/public/backgroundImages/mist.jpg)'; // Fallback image
             break;
     }
 

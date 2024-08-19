@@ -13,13 +13,15 @@
             <div class="mx-2">
              <form onsubmit="show(); return false;" class="relative flex items-center justify-end">
                  <input type="text" id="city" class="w-full p-4 my-2 text-center font-semibold uppercase ring-2 ring-gray-300 rounded focus-within:text-gray-600" placeholder="Enter location here">
-                 <!-- Hidden fields to store latitude and longitude -->
-                    <input type="hidden" id="latitude" name="latitude">
-                    <input type="hidden" id="longitude" name="longitude">
                  <button type="submit" class="absolute p-4 text-gray-600">
                     <i class="fa-solid fa-magnifying-glass fa-1x"></i>
                  </button>
              </form>
+             <form id="locationForm" method="POST">
+                <!-- Hidden fields for latitude and longitude -->
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+            </form>
              <!-- result -->
              <div id="weather-result" class="bg-black/30 rounded hidden transition ease-in duration-500">
                 <div class="text-center">
