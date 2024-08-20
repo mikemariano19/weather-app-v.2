@@ -40,7 +40,7 @@ const show = () => {
                 locationData, humidityData, windData, 
                 countryData, pressureData 
             });
-            console.log(data)
+            // console.log(data)
             changeBackground(weatherCondition);
             document.getElementById('weather-result').style.display = 'block';
             city.value = ''; // Clear the input field after success
